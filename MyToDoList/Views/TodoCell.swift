@@ -13,6 +13,10 @@ class TodoCell: UITableViewCell {
     @IBOutlet weak var cellLabel: UILabel!
     
     
+    var isCompleted = false
+    var index: Int = 0
+    var delegate: ComponentProductCellDelegate?
+    var onButtonTapped: ((Bool) -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,16 +32,22 @@ class TodoCell: UITableViewCell {
     
     
     @IBAction func checkButtonTapped(_ sender: UIButton) {
-        if sender.isSelected {
-            sender.isSelected = false
-            cellLabel.textColor = .black
-            cellLabel.attributedText = cellLabel.text?.removeStrikeThrough()
-        } else {
-            sender.isSelected = true
-            cellLabel.textColor = .black
-            cellLabel.attributedText = cellLabel.text?.strikeThrough()
-        }
+        
+        isCompleted.toggle()
+        updateUI()
+        onButtonTapped?(sender.isSelected)
+        self.delegate?.selectedInfoBtn(index: index)
     }
+    
+    func updateUI() {
+            if self.isCompleted {
+                cellLabel.textColor = .gray
+                cellLabel.attributedText = cellLabel.text?.strikeThrough()
+            } else {
+                cellLabel.textColor = .black
+                cellLabel.attributedText = cellLabel.text?.removeStrikeThrough()
+            }
+        }
 }
 
 extension String {
@@ -55,4 +65,9 @@ extension String {
         return attributeString
     }
 }
+
+protocol ComponentProductCellDelegate {
+    func selectedInfoBtn(index: Int)
+}
+
 

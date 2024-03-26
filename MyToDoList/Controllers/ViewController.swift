@@ -17,6 +17,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var editButton: UIBarButtonItem!
     
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -28,7 +30,7 @@ class ViewController: UIViewController {
         todoArray = todoDataManager.getTodoData()
     }
     
-    
+    // MARK: - Edit 버튼 눌러 수정모드
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         if tableView.isEditing {
             editButton.title = "Edit"
@@ -90,7 +92,19 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath) as! TodoCell
         let todo = todoArray[indexPath.row]
         
+        
+        
+        cell.index = indexPath.row
         cell.cellLabel.text = todo.title
+        
+        cell.onButtonTapped = { [weak cell] Bool in
+            guard let cell = cell else { return }
+            cell.isCompleted.toggle()
+            cell.updateUI()
+        }
+        
+        // 완료시 취소선, 체크박스 연결
+        // isCompleted
         
         return cell
     }

@@ -11,12 +11,13 @@ class DataManager {
     var todoDataArray: [Todo] = []
     
     func makeTodoData() {
-        todoDataArray = []
+        todoDataArray = [
+        Todo(id: 1, title: "test", isCompleted: false),
+        Todo(id: 2, title: "test2", isCompleted: false)
+        ]
     }
     
     func getTodoData() -> [Todo] {
         return todoDataArray
     }
-    
-    
 }
